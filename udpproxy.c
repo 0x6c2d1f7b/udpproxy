@@ -308,9 +308,8 @@ int main(int argc, char *argv[])
 	bzero(&servaddr_out, sizeof(servaddr_out));
 
 	// Incoming: create socket & bind it 
-	// FIXME: Now bind is to INADDR_ANY
 	incoming_fd = socket(AF_INET, SOCK_DGRAM, 0);		
-	servaddr_in.sin_addr.s_addr = htonl(INADDR_ANY);
+	servaddr_in.sin_addr.s_addr = inet_addr(incoming_address);
 	servaddr_in.sin_port = htons(atoi(incoming_port));
 	servaddr_in.sin_family = AF_INET;
 	bind(incoming_fd, (struct sockaddr*)&servaddr_in, sizeof(servaddr_in));
