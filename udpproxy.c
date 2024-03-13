@@ -190,6 +190,16 @@ int decryptpacket(char *buf,char *rxbuffer,int readbytes,char* keyfile, char* in
 	int buflen;
 	char *key;
 	binn *obj;
+    if ( readbytes < 4 ) 
+    {
+        log_error("[%d] de-serialization sanity check detected shorted than 4 bytes packet, discarding.",getpid());
+        return 0;
+    }
+    if (binn_is_valid_ex(rxbuffer, NULL, NULL, &readbytes) == FALSE) 
+    {
+        log_error("[%d] de-serialization sanity check detected non valid packet, discarding.",getpid());
+        return 0;
+    }
 	obj = binn_open(rxbuffer);
 	keyindex = binn_object_int64(obj, "keyindex");
 	buflen = binn_object_int32(obj, "buflen");
